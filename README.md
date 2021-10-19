@@ -9,6 +9,6 @@
 </div>
 
 
-## License
+## Licence
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT Licence. See `LICENSE.txt` for more information.

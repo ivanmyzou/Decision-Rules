@@ -24,6 +24,10 @@ def Regret(DT):
     col_max = DT.max(axis=0)
     return col_max - DT
 
+DR = ['maxiMax Value', 'maxiMin Value (Wald)', 'miniMax Regret (Savage)', 
+      'Laplace\'s Principle of Insufficient Reason', 'Hurwicz (Mixed Optimistic-Pessimistic)',
+      'Bayes (Expected Value)']
+
 #%% 1 maxiMax Value
 def maxi_Max(DT):
     '''
@@ -57,5 +61,56 @@ def mini_Max(RT):
     value = min(row_max)
     return np.where(row_max == value)[0].tolist()
 
+#%% 4 Laplace (insufficient reason)
+def Laplace(DT): #equal likely events
+    '''
+    Input:
+        - DT: decision table
+    Output: list of Laplace actions
+    '''
+    row_sum = DT.sum(axis=1) #to be compared again
+    value = max(row_sum)
+    return np.where(row_sum == value)[0].tolist()
 
+#%% 5 Hurwicz (with optimism index alpha)
+def Hurwicz(DT, alpha):
+    '''
+    Input:
+        - DT: decision table
+        - alpha: optimism index (weight on row max), in [0,1]
+    Output: list of Hurwicz actions
+    '''
+    row_max, row_min = DT.max(axis=1), DT.min(axis=1)
+    row_weighted = alpha * row_max + (1 - alpha) * row_min
+    value = max(row_weighted)
+    return np.where(row_weighted == value)[0].tolist()
 
+#%% 6 Bayes
+def Bayes(DT, prob_w):
+    '''
+    Input:
+        - DT: decision table
+        - prob: probability weights
+    Output: list of Bayes actions
+    '''
+    if any(w < 0 for w in prob_w):
+        raise Exception('probability weights cannot be negative')
+    if len(prob_w) != len(DT[0]):
+        raise Exception('probability weights are not the same length as events')
+    prob = np.array(prob_w) / sum(prob_w)
+    expected_values = (prob * DT).sum(axis=1)
+    value = max(expected_values)
+    return np.where(expected_values == value)[0].tolist()    
+
+#%%
+def Table_display(T):
+    '''
+    Input:
+        - T: decision table or regret table
+    Output: display string of the table
+    '''
+    T_str_list = str(T).replace('[','').replace(']','').split('\n ')
+    display_str = '\n'.join([row.replace(' ', ' '*5) for row in T_str_list])
+    return display_str
+    
+    

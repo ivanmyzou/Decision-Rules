@@ -18,9 +18,6 @@ Installation of Python libraries
    pip install plotly
    ```   
    ```sh
-   pip install pandas
-   ```   
-   ```sh
    pip install scipy
    ```     
 

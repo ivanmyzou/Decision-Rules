@@ -1,0 +1,115 @@
+#Decision Action Plotting
+import tkinter as tk
+
+import numpy as np
+
+from scipy.spatial import ConvexHull
+
+import plotly.graph_objects as go
+import plotly.io as pio
+
+import util
+
+pio.renderers.default='browser'
+
+
+class ActionPlots(tk.Frame):
+    
+    def __init__(self, master = None):
+        tk.Frame.__init__(self, master)
+        self.pack()
+        self.create()
+    
+    
+    def create(self):
+        self.instruction = tk.Label(self, 
+            text = '\n' + ' ' * 10 + 
+                'Insert Decision Table ' +
+                'with: \n' +
+                '* actions over the rows and events over the columns' + 
+                '\n' +
+                '* each row starting a new line' +
+                '\n' +
+                '* two elements in each row separated by at least one space' +
+                '\n' +
+                '* each element represents the value gain' + 
+                '\n',
+            anchor = 'nw', justify = 'left', font = ('Courier', 11)
+            )
+        self.instruction.grid(row = 0, column = 0)
+        
+        self.Text = tk.Text(self, height = 12, width = 60, bg = '#f8f9f3') #text widget for decision table input
+        self.Text.grid(row = 1, column = 0)
+        tk.Label(self, text = ' ').grid(row = 2, column = 0)
+
+        self.ActionPlots = tk.Button(self, text = 'Plot Action Mixture',
+                                     font = ('Courier', 12, 'bold'), 
+                                     command = lambda: self.compute())
+        self.ActionPlots.grid(row = 3, column = 0) #main button
+        
+        self.ERROR = None
+    
+    
+    def compute(self):
+        #remove previous results
+        if self.ERROR: 
+            self.ERROR.destroy()
+            self.ERROR = None
+        
+        
+        try:
+            self.DT = util.Text_to_Matrix(self.Text.get('1.0', 'end'))
+            self.RT = util.Regret(self.DT)
+            
+            if self.DT.shape[1] != 2:
+                raise Exception('number of columns must be 2')
+            
+            #plotly
+            maxcoor, mincoor = max(self.DT.max(), self.RT.max()), min(self.DT.min(), self.RT.min())
+            pts = np.arange(maxcoor + 1) if mincoor >= 0 else np.arange(mincoor, maxcoor + 1)
+            fig = go.Figure(go.Scatter(x = pts, y = pts, mode = 'lines', 
+                                       name = 'y = x', marker = {'color':'#576675'}))
+            
+            try:
+                Convex_Hull = ConvexHull(points = self.DT)
+                vertices_index = Convex_Hull.vertices #anti-clockwise
+                DT_vertices = self.DT.take(vertices_index,axis=0)
+                fig.add_trace(go.Scatter(x = DT_vertices[:,0], y = DT_vertices[:,1], fill = "toself",
+                                         name = 'action value mixture', marker = {'color':'#7388A0'}))
+            except: #convex hull not possible
+                fig.add_trace(go.Scatter(x = self.DT[:,0], y = self.DT[:,1], mode = 'lines',
+                                         name = 'action value mixture', marker = {'color':'#7388A0'}))
+            
+            try:
+                Convex_Hull = ConvexHull(points = self.RT)
+                vertices_index = Convex_Hull.vertices #anti-clockwise
+                RT_vertices = self.RT.take(vertices_index,axis=0)
+                fig.add_trace(go.Scatter(x = RT_vertices[:,0], y = RT_vertices[:,1], fill = "toself",
+                                         name = 'action regret mixture', marker = {'color':'#D9A2A3'}))
+            except: #convex hull not possible
+                fig.add_trace(go.Scatter(x = self.RT[:,0], y = self.RT[:,1], mode = 'lines',
+                                         name = 'action regret mixture', marker = {'color':'#D9A2A3'}))
+                
+            
+            actions = ['action ' + str(n) for n in range(1, self.DT.shape[0]+1)]
+            fig.add_trace(go.Scatter(x = self.DT[:,0], y = self.DT[:,1], text = actions,
+                                     mode = 'markers', name = 'values', marker = {'color':'#375678'}))
+            fig.add_trace(go.Scatter(x = self.RT[:,0], y = self.RT[:,1], text = actions,
+                                     mode = 'markers', name = 'regrets', marker = {'color':'#903838'}))
+            
+            fig.show()
+            
+        except Exception as e: #display error message
+            error_message = str(e)
+            self.ERROR = tk.Label(self, text = '\nERROR: \n' + error_message, 
+                                  font = ('Helvetica', 12, 'bold'), fg = '#b10000')
+            self.ERROR.grid(row = 4, column = 0) #ERROR display beneath the text widget
+
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    root.title(string = 'Action-Plots')
+    root.geometry('600x500')
+    app = ActionPlots(master = root)
+    app.mainloop()
+

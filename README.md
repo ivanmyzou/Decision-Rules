@@ -8,6 +8,21 @@
   Automated Analysis of Decision Rules
 </div>
 
+## Prerequisites
+
+Installation of Python libraries
+   ```sh
+   pip install numpy
+   ```
+   ```sh
+   pip install plotly
+   ```   
+   ```sh
+   pip install pandas
+   ```   
+   ```sh
+   pip install scipy
+   ```     
 
 ## Licence
 

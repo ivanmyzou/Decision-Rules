@@ -1,16 +1,18 @@
-#Automated Analysis Decision Rule on Decision Tables
+#Automated Analysis of Decision Rules on Decision Tables
 import tkinter as tk
 
 import util
 
 class DecisionRules(tk.Frame):
+    
     def __init__(self, master = None):
         tk.Frame.__init__(self, master)
         self.pack()
         self.create()
     
+    
     def create(self):
-        self.instruction = tk.Label(self, 
+        self.instruction = tk.Label(self, #instructions
             text = '\n' + ' ' * 10 + 
                 'Insert Decision Table ' +
                 'with: \n' +
@@ -54,7 +56,8 @@ class DecisionRules(tk.Frame):
         self.ERROR = None
         self.TABLE = None
         self.FRAME = None      
-        
+    
+    
     def compute(self):
         #remove previous results
         if self.ERROR: 
@@ -66,7 +69,8 @@ class DecisionRules(tk.Frame):
         if self.FRAME:
             self.FRAME.destroy()
             self.FRAME = None
-
+        
+        
         try:
             self.DT = util.Text_to_Matrix(self.Text.get('1.0', 'end'))
             self.RT = util.Regret(self.DT)            
@@ -116,15 +120,16 @@ class DecisionRules(tk.Frame):
                          anchor = 'nw', justify = 'left'
                          ).pack()
             
-        except Exception as e:
+        except Exception as e: #display error message
             error_message = str(e)
             self.ERROR = tk.Label(self, text = '\nERROR: \n' + error_message, 
                                   font = ('Helvetica', 12, 'bold'), fg = '#b10000')
             self.ERROR.grid(row = 8, column = 2) #ERROR display beneath the text widget
-            
 
-root = tk.Tk()
-root.title(string = 'Decision-Rules')
-root.geometry('1200x650')
-app = DecisionRules(master = root)
-app.mainloop()
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    root.title(string = 'Decision-Rules')
+    root.geometry('1200x650')
+    app = DecisionRules(master = root)
+    app.mainloop()

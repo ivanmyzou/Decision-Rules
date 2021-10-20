@@ -22,7 +22,7 @@ class ActionPlots(tk.Frame):
     
     
     def create(self):
-        self.instruction = tk.Label(self, 
+        self.instruction = tk.Label(self, #instructions
             text = '\n' + ' ' * 10 + 
                 'Insert Decision Table ' +
                 'with: \n' +
@@ -67,10 +67,10 @@ class ActionPlots(tk.Frame):
             #plotly
             maxcoor, mincoor = max(self.DT.max(), self.RT.max()), min(self.DT.min(), self.RT.min())
             pts = np.arange(maxcoor + 1) if mincoor >= 0 else np.arange(mincoor, maxcoor + 1)
-            fig = go.Figure(go.Scatter(x = pts, y = pts, mode = 'lines', 
-                                       name = 'y = x', marker = {'color':'#576675'}))
+            fig = go.Figure(go.Scatter(x = pts, y = pts, mode = 'lines',
+                                       name = 'y = x', marker = {'color':'#576675'})) #y = x line
             
-            try:
+            try: #convex hull of values
                 Convex_Hull = ConvexHull(points = self.DT)
                 vertices_index = Convex_Hull.vertices #anti-clockwise
                 DT_vertices = self.DT.take(vertices_index,axis=0)
@@ -80,7 +80,7 @@ class ActionPlots(tk.Frame):
                 fig.add_trace(go.Scatter(x = self.DT[:,0], y = self.DT[:,1], mode = 'lines',
                                          name = 'action value mixture', marker = {'color':'#7388A0'}))
             
-            try:
+            try: #convex hull of regrets
                 Convex_Hull = ConvexHull(points = self.RT)
                 vertices_index = Convex_Hull.vertices #anti-clockwise
                 RT_vertices = self.RT.take(vertices_index,axis=0)
@@ -91,6 +91,7 @@ class ActionPlots(tk.Frame):
                                          name = 'action regret mixture', marker = {'color':'#D9A2A3'}))
                 
             
+            #points scatter plot
             actions = ['action ' + str(n) for n in range(1, self.DT.shape[0]+1)]
             fig.add_trace(go.Scatter(x = self.DT[:,0], y = self.DT[:,1], text = actions,
                                      mode = 'markers', name = 'values', marker = {'color':'#375678'}))
@@ -112,4 +113,3 @@ if __name__ == '__main__':
     root.geometry('600x500')
     app = ActionPlots(master = root)
     app.mainloop()
-

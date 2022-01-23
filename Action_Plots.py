@@ -74,7 +74,9 @@ class ActionPlots(tk.Frame):
                 Convex_Hull = ConvexHull(points = self.DT)
                 vertices_index = Convex_Hull.vertices #anti-clockwise
                 DT_vertices = self.DT.take(vertices_index,axis=0)
-                fig.add_trace(go.Scatter(x = DT_vertices[:,0], y = DT_vertices[:,1], fill = "toself",
+                fig.add_trace(go.Scatter(x = np.append(DT_vertices[:,0], DT_vertices[0,0]), #looping back so the shape has all edges
+                                         y = np.append(DT_vertices[:,1], DT_vertices[0,1]), #looping back so the shape has all edges
+                                         fill = "toself",
                                          name = 'action value mixture', marker = {'color':'#7388A0'}))
             except: #convex hull not possible
                 fig.add_trace(go.Scatter(x = self.DT[:,0], y = self.DT[:,1], mode = 'lines',
@@ -84,7 +86,9 @@ class ActionPlots(tk.Frame):
                 Convex_Hull = ConvexHull(points = self.RT)
                 vertices_index = Convex_Hull.vertices #anti-clockwise
                 RT_vertices = self.RT.take(vertices_index,axis=0)
-                fig.add_trace(go.Scatter(x = RT_vertices[:,0], y = RT_vertices[:,1], fill = "toself",
+                fig.add_trace(go.Scatter(x = np.append(RT_vertices[:,0], RT_vertices[0,0]), #looping back so the shape has all edges
+                                         y = np.append(RT_vertices[:,1], RT_vertices[0,1]), #looping back so the shape has all edges
+                                         fill = "toself",
                                          name = 'action regret mixture', marker = {'color':'#D9A2A3'}))
             except: #convex hull not possible
                 fig.add_trace(go.Scatter(x = self.RT[:,0], y = self.RT[:,1], mode = 'lines',
@@ -97,7 +101,17 @@ class ActionPlots(tk.Frame):
                                      mode = 'markers', name = 'values', marker = {'color':'#375678'}))
             fig.add_trace(go.Scatter(x = self.RT[:,0], y = self.RT[:,1], text = actions,
                                      mode = 'markers', name = 'regrets', marker = {'color':'#903838'}))
-            
+            try:
+                #intersects
+                intersects = np.array([util.diag_intersect(DT_vertices)[-1], util.diag_intersect(RT_vertices)[0]])
+                #values
+                fig.add_trace(go.Scatter(x = [intersects[0,0]], y = [intersects[0,1]], 
+                                         mode = 'markers', name = 'maximin value', marker = {'color':'#7495A0', 'size':10}))
+                #regrets
+                fig.add_trace(go.Scatter(x = [intersects[1,0]], y = [intersects[1,1]], 
+                                         mode = 'markers', name = 'minimax regret', marker = {'color':'#D0A9A3', 'size':10}))
+            except:
+                pass
             fig.show()
             
         except Exception as e: #display error message

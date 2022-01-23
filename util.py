@@ -113,4 +113,16 @@ def Table_display(T):
     display_str = '\n'.join([row.replace(' ', ' '*5) for row in T_str_list])
     return display_str
     
-    
+#%%
+def diag_intersect(vertices):
+    vertices = np.vstack((vertices, vertices[0,]))
+    intersects = []
+    for i in range(1, vertices.shape[0]): #row
+        A, B = vertices[i-1], vertices[i]
+        if (A[1] >= A[0] and B[1] <= B[0]) or (A[1] <= A[0] and B[1] >= B[0]):
+            # m A0 + (1 - m) B0 = m A1 + (1 - m) B1
+            # m (A0 - A1 + B1 - B0) =  B1 - B0
+            m = (B[1] - B[0]) / (A[0] - A[1] + B[1] - B[0])
+            intersects.append(np.array([m * A[0] + (1 - m) * B[0], 
+                                           m * A[1] + (1 - m) * B[1]]))
+    return sorted(intersects, key = lambda x: tuple(x))

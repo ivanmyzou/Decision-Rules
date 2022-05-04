@@ -25,7 +25,11 @@ Installation of Python libraries
 
 ### Applying Decision Rules
 
+The program is `Decision_Rules.py`.
+
 ### Action Plotting in Cartesian Plane
+
+The program is `Action_Plots.py`.
 
 ## Licence
 

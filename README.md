@@ -33,9 +33,17 @@ The program is `Decision_Rules.py`. Decision rules include:
 * Hurwicz 
 * Bayes
 
+<p align="center">
+	<img src="image/DR.png" alt="Logo">
+</p>
+
 ### Action Plotting in Cartesian Plane
 
 The program is `Action_Plots.py`, allowing visualisation of decision value set and regret set.
+
+<p align="center">
+	<img src="image/AP.png" alt="Logo">
+</p>
 
 ## Licence
 

@@ -21,6 +21,12 @@ Installation of Python libraries
    pip install scipy
    ```     
 
+## Functionalities
+
+### Applying Decision Rules
+
+### Action Plotting in Cartesian Plane
+
 ## Licence
 
 This repository is distributed under the MIT Licence. See `LICENSE.txt` for more information. 

@@ -25,11 +25,17 @@ Installation of Python libraries
 
 ### Applying Decision Rules
 
-The program is `Decision_Rules.py`.
+The program is `Decision_Rules.py`. Decision rules include:
+* maxiMax (Value)
+* maxiMin (Value)
+* miniMax Regret
+* Laplace 
+* Hurwicz 
+* Bayes
 
 ### Action Plotting in Cartesian Plane
 
-The program is `Action_Plots.py`.
+The program is `Action_Plots.py`, allowing visualisation of decision value set and regret set.
 
 ## Licence
 

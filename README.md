@@ -8,6 +8,8 @@
   Automated Analysis of Decision Rules
 </div>
 
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
+
 ## Prerequisites
 
 Installation of Python libraries

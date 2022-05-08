@@ -22,6 +22,9 @@ Installation of Python libraries
    ```sh
    pip install scipy
    ```     
+   ```sh
+   pip install ttkthemes
+   ```
 
 ## Functionalities
 

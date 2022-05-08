@@ -1,5 +1,7 @@
 #Decision Action Plotting
 import tkinter as tk
+from tkinter import ttk
+from ttkthemes import ThemedTk
 
 import numpy as np
 
@@ -16,13 +18,13 @@ pio.renderers.default='browser'
 class ActionPlots(tk.Frame):
     
     def __init__(self, master = None):
-        tk.Frame.__init__(self, master)
+        ttk.Frame.__init__(self, master)
         self.pack()
         self.create()
     
     
     def create(self):
-        self.instruction = tk.Label(self, #instructions
+        self.instruction = ttk.Label(self, #instructions
             text = '\n' + ' ' * 10 + 
                 'Insert Decision Table ' +
                 'with: \n' +
@@ -34,17 +36,16 @@ class ActionPlots(tk.Frame):
                 '\n' +
                 '* each element represents the value gain' + 
                 '\n',
-            anchor = 'nw', justify = 'left', font = ('Courier', 11)
+            anchor = 'nw', justify = 'left', font = ('Courier New', 12)
             )
         self.instruction.grid(row = 0, column = 0)
         
         self.Text = tk.Text(self, height = 12, width = 60, bg = '#f8f9f3') #text widget for decision table input
         self.Text.grid(row = 1, column = 0)
-        tk.Label(self, text = ' ').grid(row = 2, column = 0)
+        ttk.Label(self, text = ' ').grid(row = 2, column = 0)
 
-        self.ActionPlots = tk.Button(self, text = 'Plot Action Mixture',
-                                     font = ('Courier', 12, 'bold'), 
-                                     command = lambda: self.compute())
+        self.ActionPlots = ttk.Button(self, text = 'Plot Action Mixture',
+                                      command = lambda: self.compute()) #themed button
         self.ActionPlots.grid(row = 3, column = 0) #main button
         
         self.ERROR = None
@@ -122,7 +123,7 @@ class ActionPlots(tk.Frame):
 
 
 if __name__ == '__main__':
-    root = tk.Tk()
+    root = ThemedTk(theme="breeze")
     root.title(string = 'Action-Plots')
     root.geometry('600x500')
     app = ActionPlots(master = root)

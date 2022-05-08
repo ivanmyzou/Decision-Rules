@@ -1,18 +1,20 @@
 #Automated Analysis of Decision Rules on Decision Tables
 import tkinter as tk
+from tkinter import ttk
+from ttkthemes import ThemedTk
 
 import util
 
 class DecisionRules(tk.Frame):
     
     def __init__(self, master = None):
-        tk.Frame.__init__(self, master)
+        ttk.Frame.__init__(self, master)
         self.pack()
         self.create()
     
     
     def create(self):
-        self.instruction = tk.Label(self, #instructions
+        self.instruction = ttk.Label(self, #instructions
             text = '\n' + ' ' * 10 + 
                 'Insert Decision Table ' +
                 'with: \n' +
@@ -23,7 +25,7 @@ class DecisionRules(tk.Frame):
                 '* each element in the row separated by at least one space' +
                 '\n' +
                 '* each element represents the value gain',
-            anchor = 'nw', justify = 'left', font = ('Courier', 11)
+            anchor = 'nw', justify = 'left', font = ('Courier New', 12)
             )
         self.instruction.grid(row = 0, column = 0)
         
@@ -32,9 +34,8 @@ class DecisionRules(tk.Frame):
         tk.Label(self, text = ' ').grid(row = 7, column = 0, columnspan = 5)
         tk.Label(self, text = ' ').grid(row = 0, column = 5)
         
-        self.DecisionRules = tk.Button(self, text = 'Apply Decision Rules',
-                                       font = ('Courier', 12, 'bold'), 
-                                       command = lambda: self.compute())
+        self.DecisionRules = ttk.Button(self, text = 'Apply Decision Rules',
+                                        command = lambda: self.compute())
         self.DecisionRules.grid(row = 1, column = 0) #main button
         
         tk.Label(self, text = 'Hurwicz optimism index (alpha): ').grid(row = 0, column = 6)
@@ -124,11 +125,11 @@ class DecisionRules(tk.Frame):
             error_message = str(e)
             self.ERROR = tk.Label(self, text = '\nERROR: \n' + error_message, 
                                   font = ('Helvetica', 12, 'bold'), fg = '#b10000')
-            self.ERROR.grid(row = 8, column = 2) #ERROR display beneath the text widget
+            self.ERROR.grid(row = 8, column = 1, columnspan = 8) #ERROR display beneath the text widget
 
 
 if __name__ == '__main__':
-    root = tk.Tk()
+    root = ThemedTk(theme="breeze")
     root.title(string = 'Decision-Rules')
     root.geometry('1200x650')
     app = DecisionRules(master = root)

@@ -127,4 +127,8 @@ if __name__ == '__main__':
     root.title(string = 'Action-Plots')
     root.geometry('600x500')
     app = ActionPlots(master = root)
+    try:
+        root.iconbitmap('icon\yunyun.ico')
+    except:
+        pass
     app.mainloop()

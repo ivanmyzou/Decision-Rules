@@ -133,4 +133,8 @@ if __name__ == '__main__':
     root.title(string = 'Decision-Rules')
     root.geometry('1200x650')
     app = DecisionRules(master = root)
+    try:
+        root.iconbitmap('icon\yunyun.ico')
+    except:
+        pass
     app.mainloop()

@@ -70,6 +70,11 @@ class ActionPlots(tk.Frame):
             pts = np.arange(maxcoor + 1) if mincoor >= 0 else np.arange(mincoor, maxcoor + 1)
             fig = go.Figure(go.Scatter(x = pts, y = pts, mode = 'lines',
                                        name = 'y = x', marker = {'color':'#576675'})) #y = x line
+            #axises
+            fig.add_trace(go.Scatter(x=[maxcoor + np.array(1), mincoor - np.array(1)], y=[0, 0], mode = 'lines',
+                                     name='x-axis', line={'color': '#46443D', 'width':1, 'dash':'dot'}))
+            fig.add_trace(go.Scatter(x=[0, 0], y=[maxcoor + np.array(1), mincoor - np.array(1)], mode = 'lines',
+                                     name='y-axis', line={'color': '#46443D', 'width':1, 'dash':'dot'}))
             
             try: #convex hull of values
                 Convex_Hull = ConvexHull(points = self.DT)
@@ -94,8 +99,7 @@ class ActionPlots(tk.Frame):
             except: #convex hull not possible
                 fig.add_trace(go.Scatter(x = self.RT[:,0], y = self.RT[:,1], mode = 'lines',
                                          name = 'action regret mixture', marker = {'color':'#D9A2A3'}))
-                
-            
+
             #points scatter plot
             actions = ['action ' + str(n) for n in range(1, self.DT.shape[0]+1)]
             fig.add_trace(go.Scatter(x = self.DT[:,0], y = self.DT[:,1], text = actions,

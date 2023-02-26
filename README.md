@@ -38,12 +38,12 @@ Installation of Python libraries
 ### Applying Decision Rules
 
 The program is `Decision_Rules.py`. Decision rules include:
-* maxiMax (Value)
-* maxiMin (Value)
-* miniMax Regret
-* Laplace 
-* Hurwicz 
-* Bayes
+* maxiMax (Value);
+* maxiMin (Value);
+* miniMax Regret;
+* Laplace;
+* Hurwicz; and
+* Bayes.
 
 <p align="center">
 	<img src="image/DR.png" alt="Logo">
